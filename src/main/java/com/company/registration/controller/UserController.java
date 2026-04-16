@@ -18,21 +18,15 @@ public class UserController {
 
     private final UserService userService;
 
-    // ================= USER PROFILE =================
-
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 
-    // ================= USER ACTIVITIES =================
-
     @GetMapping("/{id}/activities")
     public List<ActivityLog> getUserActivities(@PathVariable Long id) {
         return userService.getUserActivities(id);
     }
-
-    // ================= USER VISITS =================
 
     @GetMapping("/{id}/visits")
     public List<Visit> getUserVisits(@PathVariable Long id) {
