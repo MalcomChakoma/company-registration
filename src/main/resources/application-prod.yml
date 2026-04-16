@@ -1,118 +1,34 @@
 spring:
-
-  ############################################################
-  # PRIMARY DATABASE — PHOENIX (Sybase via jTDS)
-  ############################################################
   datasource:
-    url: jdbc:jtds:sybase://${DB_HOST}:${DB_PORT}/phoenix;CHARSET=utf8
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: net.sourceforge.jtds.jdbc.Driver
-
+    url: jdbc:postgresql://dpg-d7g8kf8sfn5c73a09lrg-a.oregon-postgres.render.com:5432/company_registration
+    username: company_registration_user
+    password: qKweUnVfFNTvjNc3w63RMJDn0Mv5QtcO
+    driver-class-name: org.postgresql.Driver
     hikari:
-      minimum-idle: 1
-      maximum-pool-size: 5
+      minimum-idle: 2
+      maximum-pool-size: 10
       idle-timeout: 30000
       connection-timeout: 30000
       validation-timeout: 5000
 
-      #  Required for jTDS — prevents AbstractMethodError on isValid()
-      connection-test-query: "SELECT 1"
-
-
-  ############################################################
-  # SECONDARY DATABASE — BO (Sybase)
-  ############################################################
-  bo:
-    datasource:
-      url: jdbc:jtds:sybase://${DB_HOST}:${DB_PORT}/BO;CHARSET=utf8
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
-      driver-class-name: net.sourceforge.jtds.jdbc.Driver
-
-      hikari:
-        minimum-idle: 1
-        maximum-pool-size: 5
-        idle-timeout: 30000
-        connection-timeout: 30000
-        validation-timeout: 5000
-        connection-test-query: "SELECT 1"
-
-
-  ############################################################
-  #  Disabling JPA – using JDBC only
-  ############################################################
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
-
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SybaseDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
-
-  ############################################################
-  #  Redis Cache
-  ############################################################
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-
-
-  ############################################################
-  #  RabbitMQ — Auto create queues/exchanges
-  ############################################################
-  rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: ${RABBITMQ_PORT}
-    username: ${RABBITMQ_USER}
-    password: ${RABBITMQ_PASSWORD}
-
-    listener:
-      simple:
-        concurrency: 1
-        max-concurrency: 5
-        acknowledge-mode: auto
-
-    template:
-      mandatory: true
-
-    admin:
-      auto-create: false
-
+  jackson:
+    serialization:
+      indent_output: true
 
 ############################################################
-#  Gateway Queue Definitions
-############################################################
-#gateway:
-#  queues:
-#    in:
-#      accounts: accounts_service_queue
-#      balance: accounts_service_queue
-#      zeepay: accounts_service_queue
-#
-#    out:
-#      exchange: cbs_service_response_message_exchange
-
-gateway:
-  queues:
-    in:
-      accounts: ${ACCOUNTS_QUEUE}
-      balance: ${BALANCE_QUEUE}
-      zeepay: ${ZEEPAY_QUEUE}
-
-    out:
-      exchange: ${RESPONSE_EXCHANGE}
-
-
-############################################################
-#  Logging
+# LOGGING
 ############################################################
 logging:
   level:
     root: INFO
-    com.posb.gateway: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
