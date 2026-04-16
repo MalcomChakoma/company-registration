@@ -2,9 +2,14 @@ package com.company.registration.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Table(name = "users") // ✅ FIX
 @Data
+@Getter
+@Setter
 public class User {
 
     @Id

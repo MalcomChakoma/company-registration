@@ -8,8 +8,6 @@ import com.company.registration.entity.ActivityLog;
 import com.company.registration.entity.Role;
 import com.company.registration.entity.User;
 import com.company.registration.exception.BadRequestException;
-import com.company.registration.exception.ResourceNotFoundException;
-import com.company.registration.exception.UnauthorizedException;
 import com.company.registration.repository.ActivityLogRepository;
 import com.company.registration.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

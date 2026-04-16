@@ -102,7 +102,7 @@ public class AdminService {
     public User assignUserToDepartment(Long userId, Long departmentId) {
 
         User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow();
 
         Department dept = deptRepo.findById(departmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
