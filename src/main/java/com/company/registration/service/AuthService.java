@@ -60,12 +60,21 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // ✅ Default role (change if needed)
-        user.setRole(Role.USER);
+        // 🛡️ Handle Dynamic Role Assignment
+        if (request.getRole() != null && !request.getRole().isEmpty()) {
+            try {
+                // Convert String from request to your Role Enum
+                user.setRole(Role.valueOf(request.getRole().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                throw new BadRequestException("Invalid role provided: " + request.getRole());
+            }
+        } else {
+            // Fallback to a safe default if no role is provided
+            user.setRole(Role.USER);
+        }
 
         User savedUser = userRepository.save(user);
 
-        // ✅ Log registration
         logActivity(savedUser, "REGISTER");
 
         return savedUser;
